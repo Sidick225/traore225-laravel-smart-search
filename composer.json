@@ -1,0 +1,40 @@
+{
+    "name": "traore225/laravel-smart-search",
+    "description": "A lightweight, configurable, scoring-based search engine for Laravel with FULLTEXT support and automatic fallback.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "search",
+        "fulltext",
+        "smart search",
+        "eloquent",
+        "mysql",
+        "fallback"
+    ],
+    "authors": [
+        {
+            "name": "Traore",
+            "email": "sidick.traore753@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Traore225\\LaravelSmartSearch\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Traore225\\LaravelSmartSearch\\LaravelSmartSearchServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/database": "^10.0|^11.0"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
