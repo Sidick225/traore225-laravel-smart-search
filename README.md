@@ -1,36 +1,46 @@
 # Laravel Smart Search
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/traore225/laravel-smart-search.svg?style=flat-square)](https://packagist.org/packages/traore225/laravel-smart-search)
-[![Total Downloads](https://img.shields.io/packagist/dt/traore225/laravel-smart-search.svg?style=flat-square)](https://packagist.org/packages/traore225/laravel-smart-search)
-[![License](https://img.shields.io/packagist/l/traore225/laravel-smart-search.svg?style=flat-square)](LICENSE.md)
+[![Latest Version on
+Packagist](https://img.shields.io/packagist/v/traore225/laravel-smart-search.svg?style=flat-square)](https://packagist.org/packages/traore225/laravel-smart-search)
+[![Total
+Downloads](https://img.shields.io/packagist/dt/traore225/laravel-smart-search.svg?style=flat-square)](https://packagist.org/packages/traore225/laravel-smart-search)
+[![License](https://img.shields.io/packagist/l/traore225/laravel-smart-search.svg?style=flat-square)](LICENSE)
 
 A lightweight, configurable, scoring-based search engine for Laravel.
 
 Laravel Smart Search provides:
 
-- Exact match priority
-- Weighted scoring system
-- FULLTEXT support (MySQL/MariaDB)
-- Automatic fallback to LIKE search
-- Configurable columns
-- Safe FULLTEXT detection (no crashes)
-- Optional fallback disabling per request
+-   Exact match priority
+-   Weighted scoring system
+-   FULLTEXT support (MySQL/MariaDB)
+-   Automatic fallback to LIKE search
+-   Configurable columns
+-   Safe FULLTEXT detection (no crashes)
+-   Optional fallback disabling per request
 
----
+------------------------------------------------------------------------
 
 ## Installation
 
 Install via Composer:
 
-```bash
+``` bash
 composer require traore225/laravel-smart-search
 ```
 
----
+------------------------------------------------------------------------
+
+## Requirements
+
+- PHP 8.1+
+- Laravel 10+ / 11+
+- MySQL or MariaDB recommended for FULLTEXT support
+
+------------------------------------------------------------------------
 
 ## Publish Configuration
 
-```bash
+``` bash
 php artisan vendor:publish --tag=smart-search-config
 ```
 
@@ -38,29 +48,37 @@ This creates:
 
 `config/smart-search.php`
 
----
+------------------------------------------------------------------------
 
 ## FULLTEXT Setup (Recommended)
 
-For best performance, add a FULLTEXT index on your `title` column:
+Generate a migration for your FULLTEXT index:
 
-```bash
-php artisan smart-search:install
+``` bash
+php artisan smart-search:make-index --table=posts --columns=title
+php artisan migrate
 ```
 
-If missing, run:
+Check if FULLTEXT is installed:
 
-```sql
+``` bash
+php artisan smart-search:install --table=posts --column=title
+```
+
+If you prefer to add it manually:
+
+``` sql
 ALTER TABLE posts ADD FULLTEXT (title);
 ```
 
-> FULLTEXT is optional but recommended.
+> FULLTEXT is optional but recommended for performance.
+> Smart Search automatically detects if FULLTEXT is available and safely disables it if missing.
 
----
+------------------------------------------------------------------------
 
 ## Basic Usage
 
-```php
+``` php
 use Traore225\LaravelSmartSearch\Search\SearchEngine;
 
 $engine = app(SearchEngine::class);
@@ -74,22 +92,22 @@ $query = $engine->apply($query, [
 $results = $query->paginate();
 ```
 
----
+------------------------------------------------------------------------
 
 ## Disable Fallback (Per Request)
 
-```php
+``` php
 $query = $engine->apply($query, [
     'description' => 'ps3 controller',
     'fallback' => false,
 ]);
 ```
 
----
+------------------------------------------------------------------------
 
-## Configuration
+## Configuration Example
 
-```php
+``` php
 return [
     'max_title_tokens' => 3,
 
@@ -119,41 +137,41 @@ return [
 ];
 ```
 
----
+------------------------------------------------------------------------
 
 ## How It Works
 
 Priority order:
 
-1. Exact match
-2. Weighted LIKE scoring
-3. FULLTEXT boolean scoring (if available)
-4. Fallback LIKE search (if enabled)
+1.  Exact match
+2.  Weighted LIKE scoring
+3.  FULLTEXT boolean scoring (if available)
+4.  Fallback LIKE search (if enabled)
 
 FULLTEXT is auto-detected and safely disabled when the index is missing.
 
----
+------------------------------------------------------------------------
 
 ## Database Support
 
-| Database | Support |
-| --- | --- |
-| MySQL | Full |
-| MariaDB | Full |
-| PostgreSQL | Partial (LIKE fallback only) |
-| SQLite | LIKE fallback only |
+| Database   | Support |
+|------------|----------|
+| MySQL      | Full |
+| MariaDB    | Full |
+| PostgreSQL | LIKE fallback only |
+| SQLite     | LIKE fallback only |
 
----
+------------------------------------------------------------------------
 
 ## Performance
 
-- FULLTEXT auto-detected and cached
-- No crash if index is missing
-- Minimal overhead
-- No external dependencies
+-   FULLTEXT auto-detected and cached
+-   No crash if index is missing
+-   Minimal overhead
+-   No external dependencies
 
----
+------------------------------------------------------------------------
 
 ## License
 
-MIT
+MIT License © 2026 Traore Sidiki
